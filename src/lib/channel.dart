@@ -28,14 +28,19 @@ class SrcChannel extends ApplicationChannel {
     final users = stringMapStoreFactory.store("users");
 
     final DatabaseFactory dbFactory = createDatabaseFactoryIo();
-    final db = await dbFactory.openDatabase(conf.database.path, version: 1,
-        onVersionChanged: (db, oldVersion, newVersion) async {
+    DatabaseMode dbMode =  DatabaseMode.defaultMode;
+    if(options.context['mode'] == 'development' || options.context['mode'] == 'test') {
+      dbMode = DatabaseMode.empty;
+    }
+
+    final db = await dbFactory.openDatabase(conf.database.path,
+        version: 1,
+        mode: dbMode, onVersionChanged: (db, oldVersion, newVersion) async {
       // If the db does not exist, create some data, or when in testing/development mode
       if (oldVersion == 0 ||
           options.context['mode'] == 'test' ||
           options.context['mode'] == 'development') {
         print("No database found. Prefiling test data");
-        await users.delete(db);
         await users.add(
             db, User(name: "Test account", mail: "t@t", password: "t").asMap());
       }
