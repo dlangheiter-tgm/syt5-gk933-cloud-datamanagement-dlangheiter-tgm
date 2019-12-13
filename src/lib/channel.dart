@@ -60,7 +60,7 @@ class SrcChannel extends ApplicationChannel {
         RegisterController(htmlRenderer: htmlRenderer, userStore: userStore));
 
     final policy = conf.server.caching
-        ? CachePolicy(expirationFromNow: Duration(hours: 12))
+        ? const CachePolicy(expirationFromNow: Duration(hours: 12))
         : null;
     router.route("/*").link(
         () => FileController("public/")..addCachePolicy(policy, (_) => true));

@@ -1,6 +1,8 @@
 import '../src.dart';
 
 class Login extends Serializable {
+  Login({this.mail, this.password});
+
   String mail;
   String password;
 
