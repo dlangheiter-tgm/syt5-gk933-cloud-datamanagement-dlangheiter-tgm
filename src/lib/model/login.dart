@@ -2,6 +2,7 @@ import '../src.dart';
 
 class Login extends Serializable {
   Login({this.mail, this.password});
+  Login.copy(Login l): mail = l.mail, password = l.password;
 
   String mail;
   String password;
