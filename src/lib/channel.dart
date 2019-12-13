@@ -5,6 +5,7 @@ import 'package:src/controllers/login_controller.dart';
 
 import 'controllers/register_controller.dart';
 import 'model/user.dart';
+import 'services/user_store.dart';
 import 'src.dart';
 
 import 'utility/html_template.dart';
@@ -13,8 +14,7 @@ class SrcChannel extends ApplicationChannel {
   HTMLRenderer htmlRenderer;
   ApplicationConfiguration conf;
 
-  Database db;
-  StoreRef users;
+  UserStore userStore;
 
   @override
   Future prepare() async {
@@ -25,10 +25,10 @@ class SrcChannel extends ApplicationChannel {
 
     htmlRenderer = HTMLRenderer(cacheEnabled: conf.server.caching);
 
-    users = stringMapStoreFactory.store("users");
+    final users = stringMapStoreFactory.store("users");
 
     final DatabaseFactory dbFactory = createDatabaseFactoryIo();
-    db = await dbFactory.openDatabase(conf.database.path, version: 1,
+    final db = await dbFactory.openDatabase(conf.database.path, version: 1,
         onVersionChanged: (db, oldVersion, newVersion) async {
       // If the db does not exist, create some data, or when in testing/development mode
       if (oldVersion == 0 ||
@@ -40,6 +40,8 @@ class SrcChannel extends ApplicationChannel {
             db, User(name: "Test account", mail: "t@t", password: "t").asMap());
       }
     });
+
+    userStore = UserStore(db, users);
   }
 
   @override
@@ -47,10 +49,10 @@ class SrcChannel extends ApplicationChannel {
     final router = Router();
 
     router.route("/login").link(() =>
-        LoginController(htmlRenderer: htmlRenderer, db: db, users: users));
+        LoginController(htmlRenderer: htmlRenderer, userStore: userStore));
 
     router.route("/register").link(() =>
-        RegisterController(htmlRenderer: htmlRenderer, db: db, users: users));
+        RegisterController(htmlRenderer: htmlRenderer, userStore: userStore));
 
     final policy = conf.server.caching
         ? CachePolicy(expirationFromNow: Duration(hours: 12))

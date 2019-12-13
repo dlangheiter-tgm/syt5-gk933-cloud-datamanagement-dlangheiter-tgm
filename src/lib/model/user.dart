@@ -1,12 +1,16 @@
 import 'package:meta/meta.dart';
 import 'package:src/src.dart';
 
-class User {
+class User extends Serializable {
   User({
-    @required this.name,
-    @required this.mail,
-    @required this.password,
+    this.name,
+    this.mail,
+    this.password,
   });
+
+  User.from(obj) {
+    readFrom(obj);
+  }
 
   String mail;
   String name;
@@ -38,6 +42,10 @@ class User {
 
   @override
   void readFromMap(Map<String, dynamic> object) {
+    readFrom(object);
+  }
+
+  void readFrom(dynamic object) {
     name = ifListFirst(object["name"]);
     mail = ifListFirst(object["mail"]);
     password = ifListFirst(object["password"]);

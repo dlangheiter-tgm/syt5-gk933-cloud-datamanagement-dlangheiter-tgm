@@ -1,15 +1,15 @@
-import 'package:src/model/register.dart';
+import 'package:src/model/user.dart';
+import 'package:src/services/user_store.dart';
 import 'package:src/src.dart';
 import 'package:meta/meta.dart';
 import 'package:src/utility/html_template.dart';
 
 class RegisterController extends ResourceController {
   RegisterController(
-      {@required this.htmlRenderer, @required this.db, @required this.users});
+      {@required this.htmlRenderer, @required this.userStore});
 
   final HTMLRenderer htmlRenderer;
-  final Database db;
-  final StoreRef users;
+  final UserStore userStore;
 
   @override
   List<ContentType> acceptedContentTypes = [
@@ -23,15 +23,14 @@ class RegisterController extends ResourceController {
   }
 
   @Operation.post()
-  Future<Response> login(@Bind.body() Register register) async {
-    final result = await users.findFirst(db,
-        finder: Finder(filter: Filter.equals("mail", register.mail)));
+  Future<Response> login(@Bind.body() User user) async {
+    final result = await userStore.hasUser(user.mail);
 
-    await users.add(db, register.asMap());
-
-    if (result != null) {
+    if (result == true) {
       return redirect("/alreadyExists.html");
     }
+
+    await userStore.addUser(user);
 
     return redirect("/registered.html");
   }
