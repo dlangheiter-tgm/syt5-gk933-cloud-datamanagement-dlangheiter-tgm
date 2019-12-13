@@ -1,11 +1,6 @@
 import 'package:src/model/login.dart';
-import 'package:src/model/user.dart';
 
 import '../test_runner.dart';
-
-final goodLogin = Login(mail: "t@t", password: "t");
-final goodUser = User(name: "Test account", mail: "t@t", password: "t");
-final badLogin = Login(mail: "wrong@wrong", password: "wrong");
 
 class LoginTest extends TestRunner {
 
