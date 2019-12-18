@@ -113,6 +113,12 @@ Open `http://localhost:8888` in your browser
 
 ## Quellen
 
-[Aqueduct](https://aqueduct.io/)
+[Dart Aqueduct framework](https://aqueduct.io/)
 
 [Docker](https://www.docker.com/)
+
+[Save Config Dart Package](https://pub.dev/packages/safe_config)
+
+[Args Dart Package](https://pub.dev/packages/args)
+
+[Sembast Dart Package](https://pub.dev/packages/sembast)
