@@ -8,4 +8,9 @@ class ApplicationConfiguration extends Configuration {
   ServerConfig server;
 
   DatabaseConfig database;
+
+  @override
+  String toString() {
+    return 'ApplicationConfiguration{server: $server, database: $database}';
+  }
 }
