@@ -29,7 +29,7 @@ Future main(List<String> args) async {
   if(conf.server.processors > 0) {
     numProcessors = min(numProcessors, conf.server.processors);
   } else if(conf.server.processors < 0) {
-    numProcessors = min(numProcessors, numProcessors - conf.server.processors);
+    numProcessors = max(1, numProcessors + conf.server.processors);
   }
   app.options.port = conf.server.port;
 
