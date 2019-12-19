@@ -6,6 +6,8 @@ RUN pub get --no-precompile
 ADD config.yaml /app/
 ADD ./bin /app/bin/
 ADD ./lib/ /app/lib/
+ADD ./web/ /app/web
+ADD ./public/ /app/public
 RUN pub get --offline --no-precompile
 
 WORKDIR /app
