@@ -12,8 +12,8 @@ abstract class TestRunner {
   String name;
   ContentType contentType;
 
-  final goodLogin = Login(mail: "t@t", password: "t");
-  final goodUser = User(name: "Test account", mail: "t@t", password: "t");
+  final goodLogin = Login(mail: "setup@setup", password: "setup");
+  final goodUser = User(name: "Setup User", mail: "setup@setup", password: "setup");
   final badLogin = Login(mail: "wrong@wrong", password: "wrong");
 
   void initVars(Harness harness, String name, ContentType contentType) {

@@ -10,6 +10,7 @@ dependencies:
   aqueduct: ^3.0.0
   args: ^1.5.2
   sembast: ^2.1.2
+  password: ^1.0.0
 
 dev_dependencies:
   test: ^1.0.0

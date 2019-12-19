@@ -9,6 +9,7 @@ export 'dart:io';
 export 'package:sembast/sembast.dart';
 
 export 'package:aqueduct/aqueduct.dart';
+export 'package:password/password.dart';
 
 export 'channel.dart';
 
