@@ -5,9 +5,9 @@ import 'package:src/config/application_config.dart';
 import 'package:src/src.dart';
 
 final confs = {
-  "deployment": "config.yaml",
-  "development": "config.dev.yaml",
-  "test": "config.src.yaml",
+  "deployment": "confgig/config.yaml",
+  "development": "config/config.dev.yaml",
+  "test": "config/config.src.yaml",
 };
 
 Future main(List<String> args) async {
