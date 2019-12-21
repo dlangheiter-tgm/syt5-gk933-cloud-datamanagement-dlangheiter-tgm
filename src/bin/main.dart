@@ -4,7 +4,7 @@ import 'package:args/args.dart';
 import 'package:src/config/application_config.dart';
 import 'package:src/src.dart';
 
-final confs = {
+final _confs = {
   "deployment": "confgig/config.yaml",
   "development": "config/config.dev.yaml",
   "test": "config/config.src.yaml",
@@ -20,7 +20,7 @@ Future main(List<String> args) async {
 
   final app = Application<SrcChannel>();
 
-  app.options.configurationFilePath = confs[results['mode']];
+  app.options.configurationFilePath = _confs[results['mode']];
   app.options.context['mode'] = results['mode'];
 
   final conf = ApplicationConfiguration(app.options.configurationFilePath);

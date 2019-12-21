@@ -25,8 +25,10 @@ class RegisterTest extends TestRunner {
           body: u.asMap(),
           headers: defaultHeaders);
 
-      expect(resp.statusCode, 301);
-      expect(resp, hasHeaders({'location': '/registered.html'}));
+      expect(resp.statusCode, 200);
+      expect(resp, hasHeaders({'content-type': ContentType.html}));
+      expect(resp, hasBody(contains("registered")));
+      expect(resp, hasBody(contains(u.name)));
     });
 
     test("POST /register $name fresh register already exitst 301", () async {

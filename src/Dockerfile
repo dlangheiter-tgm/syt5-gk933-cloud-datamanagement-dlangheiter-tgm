@@ -8,4 +8,4 @@ RUN pub get --offline --no-precompile
 
 WORKDIR /app
 
-ENTRYPOINT ["pub", "run", "aqueduct:aqueduct", "serve"]
+ENTRYPOINT ["dart", "lib/main.dart"]
