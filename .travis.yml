@@ -1,5 +1,5 @@
 language: dart
-script: pub run test -r expanded
+script: cd src && pub run test -r expanded
 branches:
   only:
     - master
