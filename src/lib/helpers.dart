@@ -17,3 +17,12 @@ Response redirect(String to) {
       },
       null);
 }
+
+Response errorJsonResp(String error) {
+  return Response.badRequest(headers: {
+    HttpHeaders.contentTypeHeader: ContentType.json.toString()
+  }, body: {
+    "error": true,
+    "message": error,
+  });
+}

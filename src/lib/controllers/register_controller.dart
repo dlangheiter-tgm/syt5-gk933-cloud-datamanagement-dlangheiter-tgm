@@ -24,14 +24,25 @@ class RegisterController extends ResourceController {
 
   @Operation.post()
   Future<Response> login(@Bind.body() User user) async {
+    if(!user.isValid()) {
+      return Response.badRequest();
+    }
+
+    final ct = ContentType.parse(request.raw.headers[HttpHeaders.contentTypeHeader][0]);
+    final isJson = ct.mimeType == ContentType.json.mimeType;
+
     final result = await userStore.hasUser(user.mail);
 
     if (result == true) {
-      return redirect("/alreadyExists.html");
+      return isJson ? errorJsonResp("User already exists") : redirect("/alreadyExists.html");
     }
 
     await userStore.addUser(user);
 
-    return await htmlRenderer.respondHTML("web/registered.html", {'name': user.name});
+    return isJson ? Response.ok({
+      "error": false,
+      "name": user.name,
+      "mail": user.mail,
+    }) : await htmlRenderer.respondHTML("web/registered.html", {'name': user.name});
   }
 }

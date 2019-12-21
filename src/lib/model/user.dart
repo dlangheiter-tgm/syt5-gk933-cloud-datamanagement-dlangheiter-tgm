@@ -45,6 +45,10 @@ class User extends Serializable {
     readFrom(object);
   }
 
+  bool isValid() {
+    return name != null && mail != null && password != null;
+  }
+
   void readFrom(dynamic object) {
     name = ifListFirst(object["name"]);
     mail = ifListFirst(object["mail"]);
