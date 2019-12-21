@@ -3,11 +3,7 @@ FROM google/dart
 WORKDIR /app
 ADD pubspec.* /app/
 RUN pub get --no-precompile
-ADD config.yaml /app/
-ADD ./bin /app/bin/
-ADD ./lib/ /app/lib/
-ADD ./web/ /app/web
-ADD ./public/ /app/public
+ADD . /app/
 RUN pub get --offline --no-precompile
 
 WORKDIR /app
