@@ -32,6 +32,6 @@ class RegisterController extends ResourceController {
 
     await userStore.addUser(user);
 
-    return redirect("/registered.html");
+    return await htmlRenderer.respondHTML("web/registered.html", {'name': user.name});
   }
 }
