@@ -3,4 +3,4 @@ server:
   processors: -1
 
 database:
-  path: ./users.db
+  path: ./data/users.db

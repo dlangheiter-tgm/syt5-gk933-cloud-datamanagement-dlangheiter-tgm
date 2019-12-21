@@ -12,5 +12,5 @@ Dart_Packages.xml
 .DS_Store
 .idea/
 *.aqueduct.pid
-users.db
-users.*.db
+data/users.db
+data/users.*.db

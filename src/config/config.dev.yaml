@@ -4,4 +4,4 @@ server:
   caching: false
 
 database:
-  path: ./users.dev.db
+  path: ./data/users.dev.db
