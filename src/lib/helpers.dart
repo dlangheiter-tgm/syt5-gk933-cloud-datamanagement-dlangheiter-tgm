@@ -1,3 +1,5 @@
+import 'package:src/utility/html_template.dart';
+
 import 'src.dart';
 
 String ifListFirst(val) {
@@ -29,4 +31,26 @@ Response jsonResp(Map<String, dynamic> body, [int error]) {
 
 Response errorJsonResp(String error) {
   return jsonResp({"message": error}, HttpStatus.badRequest);
+}
+
+bool shouldReturnJson(Request request) {
+  return request != null &&
+      (!request.acceptsContentType(ContentType.html)) &&
+      request.acceptsContentType(ContentType.json);
+}
+
+Response customError(String _redirect, String message,
+    {Request request, int code = HttpStatus.badRequest}) {
+
+  return shouldReturnJson(request)
+      ? errorJsonResp(message)
+      : redirect(_redirect);
+}
+
+Future<Response> customRender(
+    String htmlPath, Map<String, String> obj, HTMLRenderer htmlRenderer,
+    {Request request}) async {
+  final isJson = shouldReturnJson(request);
+
+  return isJson ? jsonResp(obj) : await htmlRenderer.respondHTML(htmlPath, obj);
 }
