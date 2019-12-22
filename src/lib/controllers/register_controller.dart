@@ -27,22 +27,18 @@ class RegisterController extends ResourceController {
       return Response.badRequest();
     }
 
-    final isJson = (!request.acceptsContentType(ContentType.html)) &&
-        request.acceptsContentType(ContentType.json);
-
     final result = await userStore.hasUser(user.mail);
 
     if (result == true) {
-      return isJson
-          ? errorJsonResp("User already exists")
-          : redirect("/alreadyExists.html");
+      return customError("/alreadyExists.html", "User already exists",
+          request: request);
     }
 
     await userStore.addUser(user);
 
-    return isJson
-        ? jsonResp({"name": user.name, "mail": user.mail})
-        : await htmlRenderer
-            .respondHTML("web/registered.html", {'name': user.name});
+    final obj = {"name": user.name, "mail": user.mail};
+
+    return customRender("web/registered.html", obj, htmlRenderer,
+        request: request);
   }
 }
