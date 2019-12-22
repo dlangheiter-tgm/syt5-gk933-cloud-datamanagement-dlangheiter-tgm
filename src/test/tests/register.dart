@@ -23,18 +23,22 @@ class RegisterTest extends TestRunner {
     test("POST /register $name not exitst 301", () async {
       final resp = await harness.agent.post("/register",
           body: u.asMap(),
-          headers: defaultHeaders);
+          headers: {
+            HttpHeaders.acceptHeader: accept.contentType.toString(),
+            ...defaultHeaders
+          });
 
       expect(resp.statusCode, 200);
-      expect(resp, hasHeaders({'content-type': ContentType.html}));
-      expect(resp, hasBody(contains("registered")));
+      expect(resp, hasHeaders({'content-type': accept.contentType.toString()}));
+      print(resp.body);
+      //expect(resp, hasBody(contains("registered")));
       expect(resp, hasBody(contains(u.name)));
+      expect(resp, hasBody(contains(u.mail)));
     });
 
     test("POST /register $name fresh register already exitst 301", () async {
-      final resp = await harness.agent.post("/register",
-          body: u.asMap(),
-          headers: defaultHeaders);
+      final resp = await harness.agent
+          .post("/register", body: u.asMap(), headers: defaultHeaders);
 
       expect(resp.statusCode, 301);
       expect(resp, hasHeaders({'location': '/alreadyExists.html'}));
