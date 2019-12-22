@@ -18,11 +18,15 @@ Response redirect(String to) {
       null);
 }
 
-Response errorJsonResp(String error) {
-  return Response.badRequest(headers: {
+Response jsonResp(Map<String, dynamic> body, [int error]) {
+  return Response(error ?? HttpStatus.ok, {
     HttpHeaders.contentTypeHeader: ContentType.json.toString()
-  }, body: {
-    "error": true,
-    "message": error,
+  }, {
+    ...body,
+    "error": error != null,
   });
+}
+
+Response errorJsonResp(String error) {
+  return jsonResp({"message": error}, HttpStatus.badRequest);
 }
