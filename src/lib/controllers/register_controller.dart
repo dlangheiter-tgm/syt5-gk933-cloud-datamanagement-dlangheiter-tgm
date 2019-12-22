@@ -5,8 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:src/utility/html_template.dart';
 
 class RegisterController extends ResourceController {
-  RegisterController(
-      {@required this.htmlRenderer, @required this.userStore});
+  RegisterController({@required this.htmlRenderer, @required this.userStore});
 
   final HTMLRenderer htmlRenderer;
   final UserStore userStore;
@@ -24,26 +23,26 @@ class RegisterController extends ResourceController {
 
   @Operation.post()
   Future<Response> login(@Bind.body() User user) async {
-    if(!user.isValid()) {
+    if (!user.isValid()) {
       return Response.badRequest();
     }
 
-    //final ct = ContentType.parse(request.raw.headers[HttpHeaders.contentTypeHeader][0]);
-    //final isJson = ct.mimeType == ContentType.json.mimeType;
-    final isJson = false;
+    final isJson = (!request.acceptsContentType(ContentType.html)) &&
+        request.acceptsContentType(ContentType.json);
 
     final result = await userStore.hasUser(user.mail);
 
     if (result == true) {
-      return isJson ? errorJsonResp("User already exists") : redirect("/alreadyExists.html");
+      return isJson
+          ? errorJsonResp("User already exists")
+          : redirect("/alreadyExists.html");
     }
 
     await userStore.addUser(user);
 
-    return isJson ? Response.ok({
-      "error": false,
-      "name": user.name,
-      "mail": user.mail,
-    }) : await htmlRenderer.respondHTML("web/registered.html", {'name': user.name});
+    return isJson
+        ? jsonResp({"name": user.name, "mail": user.mail})
+        : await htmlRenderer
+            .respondHTML("web/registered.html", {'name': user.name});
   }
 }
