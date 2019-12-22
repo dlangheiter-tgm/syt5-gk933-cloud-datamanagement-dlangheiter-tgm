@@ -28,8 +28,9 @@ class RegisterController extends ResourceController {
       return Response.badRequest();
     }
 
-    final ct = ContentType.parse(request.raw.headers[HttpHeaders.contentTypeHeader][0]);
-    final isJson = ct.mimeType == ContentType.json.mimeType;
+    //final ct = ContentType.parse(request.raw.headers[HttpHeaders.contentTypeHeader][0]);
+    //final isJson = ct.mimeType == ContentType.json.mimeType;
+    final isJson = false;
 
     final result = await userStore.hasUser(user.mail);
 
