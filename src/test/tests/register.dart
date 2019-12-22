@@ -25,8 +25,6 @@ class RegisterTest extends TestRunner {
           body: u.asMap(),
           headers: defaultHeaders);
 
-      print(defaultHeaders);
-
       expect(resp.statusCode, 200);
       expect(resp, hasHeaders({'content-type': ContentType.html}));
       expect(resp, hasBody(contains("registered")));

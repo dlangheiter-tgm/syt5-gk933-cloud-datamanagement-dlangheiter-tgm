@@ -1,25 +1,28 @@
 import 'package:src/model/login.dart';
 import 'package:src/model/user.dart';
 
+import 'contentTypeWithName.dart';
 import 'harness/harness.dart';
 
 export 'harness/harness.dart';
 
 abstract class TestRunner {
-  TestRunner({this.harness, this.name, this.contentType});
-
   Harness harness;
-  String name;
-  ContentType contentType;
+  ContentTypeWithName contentType;
+  ContentTypeWithName accept;
 
   final goodLogin = Login(mail: "setup@setup", password: "setup");
   final goodUser = User(name: "Setup User", mail: "setup@setup", password: "setup");
   final badLogin = Login(mail: "wrong@wrong", password: "wrong");
 
-  void initVars(Harness harness, String name, ContentType contentType) {
+  void initVars(Harness harness, ContentTypeWithName contentType, ContentTypeWithName accept) {
     this.harness = harness;
-    this.name = name;
     this.contentType = contentType;
+    this.accept = accept;
+  }
+
+  get name {
+    return "${contentType.name} ${accept.name}";
   }
 
   void run();
