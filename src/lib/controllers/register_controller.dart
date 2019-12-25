@@ -38,7 +38,7 @@ class RegisterController extends ResourceController {
 
     final obj = {"name": user.name, "mail": user.mail};
 
-    return customRender("web/registered.html", obj, htmlRenderer,
+    return await customRender("web/registered.html", obj, htmlRenderer,
         request: request);
   }
 }

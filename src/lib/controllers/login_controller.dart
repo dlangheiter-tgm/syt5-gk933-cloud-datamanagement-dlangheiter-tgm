@@ -26,10 +26,14 @@ class LoginController extends ResourceController {
     final result = await userStore.authenticate(login.mail, login.password);
 
     if (result == null) {
-      return redirect("/wrong.html");
+      return customError("/wrond.html", "Wrong credentials.");
+      // return redirect("/wrong.html");
     }
 
-    return await htmlRenderer
-        .respondHTML("web/loggedIn.html", {"name": result.name});
+    return await customRender(
+        "web/loggedIn.html", result.asSaveMap(), htmlRenderer,
+        request: request);
+
+    //return await htmlRenderer.respondHTML("web/loggedIn.html", {"name": result.name});
   }
 }

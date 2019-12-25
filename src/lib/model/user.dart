@@ -40,6 +40,11 @@ class User extends Serializable {
         "password": password,
       };
 
+  Map<String, String> asSaveMap() => {
+        "name": name,
+        "mail": mail,
+      };
+
   @override
   void readFromMap(Map<String, dynamic> object) {
     readFrom(object);
