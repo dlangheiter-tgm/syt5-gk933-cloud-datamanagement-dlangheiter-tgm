@@ -30,10 +30,12 @@ class RegisterTest extends TestRunner {
 
       expect(resp.statusCode, 200);
       expect(resp, hasHeaders({'content-type': accept.contentType.toString()}));
-      print(resp.body);
-      //expect(resp, hasBody(contains("registered")));
-      expect(resp, hasBody(contains(u.name)));
-      expect(resp, hasBody(contains(u.mail)));
+
+      // Solution to strange due to strange bug that the hasBody(contains(...)) checker does not work on json responses
+      expect(resp, hasBody(anything));
+      final body = resp.body.toString();
+      expect(body, contains(u.name));
+      expect(body, contains(u.mail));
     });
 
     test("POST /register $name fresh register already exitst 301", () async {
