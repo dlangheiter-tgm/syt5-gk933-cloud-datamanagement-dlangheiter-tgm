@@ -29,8 +29,9 @@ Response jsonResp(Map<String, dynamic> body, [int error]) {
   });
 }
 
-Response errorJsonResp(String error) {
-  return jsonResp({"message": error}, HttpStatus.badRequest);
+Response errorJsonResp(String error, [int code = HttpStatus.badRequest]) {
+  print("json err");
+  return jsonResp({"message": error}, code);
 }
 
 bool shouldReturnJson(Request request) {
@@ -41,16 +42,15 @@ bool shouldReturnJson(Request request) {
 
 Response customError(String _redirect, String message,
     {Request request, int code = HttpStatus.badRequest}) {
-
   return shouldReturnJson(request)
-      ? errorJsonResp(message)
+      ? errorJsonResp(message, code)
       : redirect(_redirect);
 }
 
 Future<Response> customRender(
     String htmlPath, Map<String, String> obj, HTMLRenderer htmlRenderer,
     {Request request}) async {
-  final isJson = shouldReturnJson(request);
-
-  return isJson ? jsonResp(obj) : await htmlRenderer.respondHTML(htmlPath, obj);
+  return shouldReturnJson(request)
+      ? jsonResp(obj)
+      : await htmlRenderer.respondHTML(htmlPath, obj);
 }
