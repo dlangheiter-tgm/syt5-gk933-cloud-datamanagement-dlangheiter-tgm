@@ -15,6 +15,8 @@ class LoginTest extends TestRunner {
       HttpHeaders.acceptHeader: accept.contentType.toString(),
     };
 
+    final json = accept.contentType == ContentType.json;
+
     test("GET /login $name returns 200 HTML", () async {
       final resp = await harness.agent.get("/login", headers: defaultHeaders);
 
@@ -29,13 +31,19 @@ class LoginTest extends TestRunner {
       expect(resp.statusCode, 400);
     });
 
-    test("POST /login $name body, wrong credentials returns 301", () async {
+    test("POST /login $name body, wrong credentials", () async {
       final resp = await harness.agent.post("/login",
           body: badLogin.asMap(), headers: acceptHeaders);
 
       print(resp);
-      expect(resp.statusCode, 301);
-      expect(resp, hasHeaders({'location': '/wrong.html'}));
+      expect(resp.statusCode, json ? 400 : 301);
+      if (json) {
+        expect(resp, hasHeaders(
+            {HttpHeaders.contentTypeHeader: accept.contentType.toString()}));
+        expect(resp, hasBody(containsValue("Wrong credentials")));
+      } else {
+        expect(resp, hasHeaders({'location': '/wrong.html'}));
+      }
     });
 
     test("POST /login $name, good credentials returns 200 HTML", () async {
@@ -49,7 +57,8 @@ class LoginTest extends TestRunner {
     });
 
     test("POST /login $name, wrong mail returns 301 /wrong.html", () async {
-      final Login l = Login.copy(goodLogin)..mail = badLogin.mail;
+      final Login l = Login.copy(goodLogin)
+        ..mail = badLogin.mail;
 
       final resp = await harness.agent
           .post("/login", body: l.asMap(), headers: acceptHeaders);
@@ -59,7 +68,8 @@ class LoginTest extends TestRunner {
     });
 
     test("POST /login $name, wrong password returns 301 /wrong.html", () async {
-      final Login l = Login.copy(goodLogin)..password = badLogin.password;
+      final Login l = Login.copy(goodLogin)
+        ..password = badLogin.password;
 
       final resp = await harness.agent
           .post("/login", body: l.asMap(), headers: acceptHeaders);
