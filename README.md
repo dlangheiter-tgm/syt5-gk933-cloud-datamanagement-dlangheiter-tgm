@@ -1,5 +1,7 @@
 # Distributed Computing "Cloud-Datenmanagement"
 
+![Build Status](https://travis-ci.com/TGM-HIT/syt5-gk933-cloud-datamanagement-dlangheiter-tgm.svg?token=gRp8tqjvnZYvzf4kNuzu&branch=master)
+
 ## Aufgabenstellung
 Die detaillierte [Aufgabenstellung](TASK.md) beschreibt die notwendigen Schritte zur Realisierung.
 
