@@ -30,7 +30,6 @@ Response jsonResp(Map<String, dynamic> body, [int error]) {
 }
 
 Response errorJsonResp(String error, [int code = HttpStatus.badRequest]) {
-  print("json err");
   return jsonResp({"message": error}, code);
 }
 

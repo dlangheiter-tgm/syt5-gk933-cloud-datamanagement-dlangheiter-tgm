@@ -9,6 +9,78 @@ This server has a index with links to login and register. The registered users a
 
 ## Implementierung
 
+My solution is using a [Dart](https://dart.dev/) framework named [Aqueduct](https://aqueduct.io/) as a base. I am using this because it was the first I found and I did not look for another one since I was just trying it out. And it had a ORM which sadly only works for Postgres. It also has a test framework which helped me to write the tests.
+
+### Endpoints
+
+Accepts post with content type (`content-type` header):
+
+* x-www-form-urlencoded (For human/from html)
+* application/json (For api/curl)
+
+Can respond with (`accept` header):
+
+* text/html (For human interaction)
+* application/json (For api/curl)
+
+#### /login
+
+Parameters:
+
+* mail: Mail of the user
+* password: Password of the user
+
+```json
+{"mail": "setup@setup", "password": "setup"}
+```
+
+Returns (json)
+
+* error: Bool if error has occoured (always false if no error)
+
+* name: Name of the user
+* mail: Mail of the user
+
+```json
+{"name":"Setup User","mail":"setup@setup","error":false}
+```
+
+#### /register
+
+Parameters:
+
+* name: Name of the user
+* mail: Mail of the user
+* password: Password of the user
+
+```json
+{"name": "curl-register", "mail": "register@curl", "password": "curl"}
+```
+
+Returns (json)
+
+* error: Bool if error has occoured (always false if no error)
+
+* name: Name of the user
+* mail: Mail of the user
+
+```json
+{"name":"curl-register","mail":"register@curl","error":false}
+```
+
+#### Error
+
+If an error occoures the returned json object has the following parameters:
+
+* error: Bool if error has occoured (always true)
+* message: Human readable error message
+
+```json
+{"message":"Wrong credentials","error":true}
+```
+
+
+
 ## Deployment
 
 Requirements:
@@ -110,6 +182,22 @@ database:
 ### Access
 
 Open `http://localhost:8888` in your browser
+
+### Test with CURL
+
+Login
+
+```bash
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" http://localhost:8888/login -d '{"mail": "setup@setup", "password": "setup"}'
+```
+
+Register
+
+```bash
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" http://localhost:8888/register -d '{"name": "curl-register", "mail": "register@curl", "password": "curl"}'
+```
+
+
 
 ## Quellen
 
