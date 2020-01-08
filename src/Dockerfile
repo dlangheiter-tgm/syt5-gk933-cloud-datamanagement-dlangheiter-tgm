@@ -8,4 +8,6 @@ RUN pub get --offline --no-precompile
 
 WORKDIR /app
 
-ENTRYPOINT ["dart", "lib/main.dart"]
+RUN ls
+
+ENTRYPOINT ["dart", "bin/main.dart"]

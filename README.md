@@ -146,13 +146,13 @@ docker run -p 8888:8888 cloud-data
 Make the data persistent
 
 ```
-docker run -p 8888:8888 -v ./users.db:/app/users.db cloud-data
+docker run -p 8888:8888 -v /your/data/dir:/app/data cloud-data
 ```
 
 Config the docker container:
 
 ```bash
-docker run -p 8888:8888 -v ./config.yaml:/app/config.yaml cloud-data
+docker run -p 8888:8888 -v /your/config/dir:/app/config cloud-data
 ```
 
 ### Configuration

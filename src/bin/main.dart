@@ -5,7 +5,7 @@ import 'package:src/config/application_config.dart';
 import 'package:src/src.dart';
 
 final _confs = {
-  "deployment": "confgig/config.yaml",
+  "deployment": "config/config.yaml",
   "development": "config/config.dev.yaml",
   "test": "config/config.src.yaml",
 };
