@@ -14,12 +14,20 @@ class RegisterTest extends TestRunner {
       HttpHeaders.acceptHeader: accept.contentType.toString(),
     };
 
+    final json = accept.contentType == ContentType.json;
+
     test("POST /register $name already exists 301", () async {
       final resp = await harness.agent
           .post("/register", body: goodUser.asMap(), headers: acceptHeaders);
 
-      expect(resp.statusCode, 301);
-      expect(resp, hasHeaders({'location': '/alreadyExists.html'}));
+      expect(resp.statusCode, json ? 400 : 301);
+      if (json) {
+        expect(resp, hasHeaders(
+            {HttpHeaders.contentTypeHeader: accept.contentType.toString()}));
+        expect(resp, hasBody(containsValue("User already exists")));
+      } else {
+        expect(resp, hasHeaders({'location': '/alreadyExists.html'}));
+      }
     });
 
     User u =
@@ -43,8 +51,17 @@ class RegisterTest extends TestRunner {
       final resp = await harness.agent
           .post("/register", body: u.asMap(), headers: acceptHeaders);
 
-      expect(resp.statusCode, 301);
-      expect(resp, hasHeaders({'location': '/alreadyExists.html'}));
+      print(name);
+      print(resp);
+      print(resp.body);
+      expect(resp.statusCode, json ? 400 : 301);
+      if (json) {
+        expect(resp, hasHeaders(
+            {HttpHeaders.contentTypeHeader: accept.contentType.toString()}));
+        expect(resp, hasBody(containsValue("User already exists")));
+      } else {
+        expect(resp, hasHeaders({'location': '/alreadyExists.html'}));
+      }
     });
 
     test("POST /login $name, good credentials returns 200 HTML", () async {

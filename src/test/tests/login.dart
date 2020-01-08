@@ -35,7 +35,6 @@ class LoginTest extends TestRunner {
       final resp = await harness.agent.post("/login",
           body: badLogin.asMap(), headers: acceptHeaders);
 
-      print(resp);
       expect(resp.statusCode, json ? 400 : 301);
       if (json) {
         expect(resp, hasHeaders(
@@ -46,25 +45,32 @@ class LoginTest extends TestRunner {
       }
     });
 
-    test("POST /login $name, good credentials returns 200 HTML", () async {
+    test("POST /login $name, good credentials returns 200", () async {
       final resp = await harness.agent
           .post("/login", body: goodLogin.asMap(), headers: acceptHeaders);
 
       expect(resp.statusCode, 200);
-      expect(resp, hasHeaders({'content-type': ContentType.html}));
-      expect(resp, hasBody(contains("Logged In")));
-      expect(resp, hasBody(contains(goodUser.name)));
+      expect(resp, hasHeaders({HttpHeaders.contentTypeHeader: accept.contentType}));
+      final body = resp.body.toString();
+      expect(body, contains(goodUser.name));
     });
 
-    test("POST /login $name, wrong mail returns 301 /wrong.html", () async {
+    test("POST /login $name, wrong mail returns", () async {
       final Login l = Login.copy(goodLogin)
         ..mail = badLogin.mail;
 
       final resp = await harness.agent
           .post("/login", body: l.asMap(), headers: acceptHeaders);
 
-      expect(resp.statusCode, 301);
-      expect(resp, hasHeaders({'location': '/wrong.html'}));
+
+      expect(resp.statusCode, json ? 400 : 301);
+      if (json) {
+        expect(resp, hasHeaders(
+            {HttpHeaders.contentTypeHeader: accept.contentType.toString()}));
+        expect(resp, hasBody(containsValue("Wrong credentials")));
+      } else {
+        expect(resp, hasHeaders({'location': '/wrong.html'}));
+      }
     });
 
     test("POST /login $name, wrong password returns 301 /wrong.html", () async {
@@ -74,8 +80,14 @@ class LoginTest extends TestRunner {
       final resp = await harness.agent
           .post("/login", body: l.asMap(), headers: acceptHeaders);
 
-      expect(resp.statusCode, 301);
-      expect(resp, hasHeaders({'location': '/wrong.html'}));
+      expect(resp.statusCode, json ? 400 : 301);
+      if (json) {
+        expect(resp, hasHeaders(
+            {HttpHeaders.contentTypeHeader: accept.contentType.toString()}));
+        expect(resp, hasBody(containsValue("Wrong credentials")));
+      } else {
+        expect(resp, hasHeaders({'location': '/wrong.html'}));
+      }
     });
   }
 }
