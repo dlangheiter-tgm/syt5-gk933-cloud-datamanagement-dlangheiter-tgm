@@ -51,9 +51,6 @@ class RegisterTest extends TestRunner {
       final resp = await harness.agent
           .post("/register", body: u.asMap(), headers: acceptHeaders);
 
-      print(name);
-      print(resp);
-      print(resp.body);
       expect(resp.statusCode, json ? 400 : 301);
       if (json) {
         expect(resp, hasHeaders(
